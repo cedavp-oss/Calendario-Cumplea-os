@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Cumpleaños - MCC</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --accent-color: #ff6b6b;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .grid-calendario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Contenedor con perspectiva para el efecto 3D */
+        .tarjeta-contenedor {
+            background-color: transparent;
+            width: 100%;
+            height: 350px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        /* Estructura interna que realmente gira */
+        .tarjeta-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+
+        /* Clase que activa el giro mediante JavaScript */
+        .tarjeta-contenedor.girada .tarjeta-flipper {
+            transform: rotateY(180deg);
+        }
+
+        /* Caras frontal y trasera */
+        .tarjeta-frontal, .tarjeta-trasera {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* PARTE FRONTAL */
+        .contenedor-foto {
+            width: 100%;
+            height: 200px;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .contenedor-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-cumple {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mes-titulo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .nombre-persona {
+            font-size: 1.5rem;
+            margin: 5px 0;
+            color: #2d3748;
+        }
+
+        .fecha-dia {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin: 0;
+            background: #fff5f5;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* PARTE TRASERA */
+        .tarjeta-trasera {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .contenido-trasero h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .contenido-trasero p {
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .icono-regalo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-calendario {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nuestros Cumpleaños Especiales</h1>
+
+    <!-- El grid que contendrá las tarjetas ordenadas dinámicamente -->
+    <div class="grid-calendario" id="calendarioGrid">
+
+        <!-- ENERO -->
+        <div class="tarjeta-contenedor" data-mes="0">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Desiree.jpg" alt="Foto de Desiree">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Enero</p>
+                        <h2 class="nombre-persona">Desiree</h2>
+                        <p class="fecha-dia">Día 03</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Desiree!</h3>
+                        <p>Que el Señor bendiga tu vida, guíe tus pasos y llene tu corazón de mucha paz en tu día especial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEBRERO -->
+        <div class="tarjeta-contenedor" data-mes="1">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/jose-ali.jpg" alt="Foto de José Alí">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Febrero</p>
+                        <h2 class="nombre-persona">José Alí</h2>
+                        <p class="fecha-dia">Día 05</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades José Alí!</h3>
+                        <p>Te deseamos un excelente cumpleaños lleno de salud, amor familiar y abundantes bendiciones en comunidad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARZO -->
+        <div class="tarjeta-contenedor" data-mes="2">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/kenia.jpg" alt="Foto de Kenia">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Mayo</p>
+                        <h2 class="nombre-persona">Kenia</h2>
+                        <p class="fecha-dia">Día 18</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Kenia!</h3>
+                        <p>Que este nuevo año de vida venga cargado de metas cumplidas, alegrías y la protección del Altísimo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JUNIO -->
+        <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/geisha.jpg" alt="Foto de Geisha">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Junio</p>
+                        <h2 class="nombre-persona">Geisha</h2>
+                        <p class="fecha-dia">Día 04</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Geisha!</h3>
+                        <p>Que pases un día maravilloso rodeada de tus seres queridos. ¡Un fuerte abrazo de cumpleaños!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/armey.jpg" alt="Foto de Armey">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Junio</p>
+                        <h2 class="nombre-persona">Armey</h2>
+                        <p class="fecha-dia">Día 27</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Armey!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+           <!-- JULIO -->
+        <div class="tarjeta-contenedor" data-mes="2">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Francis.jpg" alt="Foto de Francis">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Julio</p>
+                        <h2 class="nombre-persona">Francis</h2>
+                        <p class="fecha-dia">Día 09</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Francis!</h3>
+                        <p>Que este nuevo año de vida venga cargado de metas cumplidas, alegrías y la protección del Altísimo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Luis.jpg" alt="Foto de Luis">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Agosto</p>
+                        <h2 class="nombre-persona">Luis Eduardo</h2>
+                        <p class="fecha-dia">Día 01</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Luis!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+           <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Alexander.jpg" alt="Foto de Alexander">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Agosto</p>
+                        <h2 class="nombre-persona">Alexander</h2>
+                        <p class="fecha-dia">Día 05</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Alex!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+                    <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Aravick.jpg" alt="Foto de Aravick">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Agosto</p>
+                        <h2 class="nombre-persona">Aravick</h2>
+                        <p class="fecha-dia">Día 14</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Aravick!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                              <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Simón.jpg" alt="Foto de Simón">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Septiembre</p>
+                        <h2 class="nombre-persona">Simón</h2>
+                        <p class="fecha-dia">Día 09</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Simón!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                                       <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Carlos.jpg" alt="Foto de Carlos Duran">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Septiembre</p>
+                        <h2 class="nombre-persona">Carlos</h2>
+                        <p class="fecha-dia">Día 20</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Carlos!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                                       <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Jeimmy.jpg" alt="Foto de Jeimmy Mora">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Septiembre</p>
+                        <h2 class="nombre-persona">Jeimmy</h2>
+                        <p class="fecha-dia">Día 25</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Jeimmy!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                                       <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Belquis.jpg" alt="Foto de Belquis">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Octubre</p>
+                        <h2 class="nombre-persona">Belquis</h2>
+                        <p class="fecha-dia">Día 03</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Belquis!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                                     <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Ramón.jpg" alt="Foto de Ramón">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Octubre</p>
+                        <h2 class="nombre-persona">Ramón</h2>
+                        <p class="fecha-dia">Día 21</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Ramón!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                                         <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Jesus.jpg" alt="Foto de Jesús David">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Noviembre</p>
+                        <h2 class="nombre-persona">Jesús</h2>
+                        <p class="fecha-dia">Día 28</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Jesús!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+                                       <div class="tarjeta-contenedor" data-mes="5">
+            <div class="tarjeta-flipper">
+                <div class="tarjeta-frontal">
+                    <div class="contenedor-foto">
+                        <img src="imagenes/Yesenia.jpg" alt="Foto de Yesenia">
+                    </div>
+                    <div class="info-cumple">
+                        <p class="mes-titulo">Diciembre</p>
+                        <h2 class="nombre-persona">Yesenia</h2>
+                        <p class="fecha-dia">Día 19</p>
+                    </div>
+                </div>
+                <div class="tarjeta-trasera">
+                    <div class="contenido-trasero">
+                        <div class="icono-regalo">🎂🎉</div>
+                        <h3>¡Felicidades Yesenia!</h3>
+                        <p>Celebramos tu vida y le pedimos a Dios que te brinde muchísimos años más repletos de felicidad y éxitos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
